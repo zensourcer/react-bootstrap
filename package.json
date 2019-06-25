@@ -1,6 +1,6 @@
 {
   "name": "react-bootstrap",
-  "version": "0.32.4",
+  "version": "0.32.5",
   "description": "Bootstrap 3 components built with React",
   "repository": {
     "type": "git",
@@ -51,19 +51,16 @@
   ],
   "author": "Stephen J. Collings <stevoland@gmail.com>",
   "license": "MIT",
-  "peerDependencies": {
-    "react": "^0.14.9 || >=15.3.0",
-    "react-dom": "^0.14.9 || >=15.3.0"
-  },
+  "peerDependencies": {},
   "devDependencies": {
     "@babel/cli": "^7.0.0",
-    "@babel/core": "^7.0.0",
+    "@babel/core": "^7.4.5",
     "@babel/plugin-proposal-class-properties": "^7.0.0",
     "@babel/plugin-proposal-export-default-from": "^7.0.0",
     "@babel/plugin-proposal-export-namespace-from": "^7.0.0",
     "@babel/plugin-syntax-dynamic-import": "^7.0.0",
     "@babel/plugin-transform-runtime": "^7.0.0",
-    "@babel/preset-env": "^7.0.0",
+    "@babel/preset-env": "7.4.5",
     "@babel/preset-react": "^7.0.0",
     "@babel/register": "^7.0.0",
     "babel-eslint": "^9.0.0",
@@ -105,8 +102,6 @@
     "lodash": "^4.17.10",
     "mocha": "^5.2.0",
     "prettier": "^1.12.1",
-    "react": "^16.4.2",
-    "react-dom": "^16.4.2",
     "react-test-renderer": "^16.4.2",
     "release-script": "^1.0.2",
     "sinon": "^2.3.2",
@@ -114,13 +109,15 @@
     "webpack": "^4.4.1"
   },
   "dependencies": {
-    "@babel/runtime-corejs2": "^7.0.0",
     "classnames": "^2.2.5",
+    "core-js": "3.1.4",
     "dom-helpers": "^3.2.0",
     "invariant": "^2.2.4",
     "keycode": "^2.2.0",
     "prop-types": "^15.6.1",
     "prop-types-extra": "^1.0.1",
+    "react": "16.8.6",
+    "react-dom": "16.8.6",
     "react-overlays": "^0.8.0",
     "react-prop-types": "^0.4.0",
     "react-transition-group": "^2.0.0",

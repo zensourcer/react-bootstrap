@@ -26,12 +26,16 @@ module.exports = api => {
       [
         '@babel/preset-env',
         {
-          loose: true,
-          shippedProposals: true,
           modules: modules ? 'commonjs' : false,
+          corejs: 3,
+          // We only use .jsx files on the logged in site, where
+          // we strongly encourage using Chrome latest.
+          // This disables some tranfroms that hurt performance and
+          // aren't needed for most modern browsers.
           targets: {
-            browsers: ['last 4 versions', 'not ie <= 8']
-          }
+            chrome: '71',
+          },
+          useBuiltIns: 'usage',
         }
       ],
       ['@babel/preset-react', { development: dev }]
@@ -40,10 +44,6 @@ module.exports = api => {
       ['@babel/plugin-proposal-class-properties', { loose: true }],
       '@babel/plugin-proposal-export-default-from',
       '@babel/plugin-proposal-export-namespace-from',
-      [
-        '@babel/plugin-transform-runtime',
-        { useESModules: !modules, corejs: 2 }
-      ],
       'babel-plugin-dev-expression',
       modules && 'babel-plugin-add-module-exports',
       api.env() === 'test' && 'babel-plugin-istanbul'
