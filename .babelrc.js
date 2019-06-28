@@ -26,7 +26,7 @@ module.exports = api => {
       [
         '@babel/preset-env',
         {
-          modules: modules ? 'commonjs' : false,
+          // modules: modules ? 'commonjs' : false,
           corejs: 3,
           // We only use .jsx files on the logged in site, where
           // we strongly encourage using Chrome latest.
