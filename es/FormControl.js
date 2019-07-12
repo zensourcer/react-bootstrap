@@ -47,7 +47,7 @@ const propTypes = {
    * <FormControl inputRef={ref => { this.input = ref; }} />
    * ```
    */
-  inputRef: _propTypes.default.func
+  inputRef: _propTypes.default.oneOfType([_propTypes.default.func, _propTypes.default.object])
 };
 const defaultProps = {
   componentClass: 'input'

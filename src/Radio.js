@@ -27,7 +27,7 @@ const propTypes = {
    * <Radio inputRef={ref => { this.input = ref; }} />
    * ```
    */
-  inputRef: PropTypes.func
+  inputRef: PropTypes.oneOfType([PropTypes.func, PropTypes.object])
 };
 
 const defaultProps = {
