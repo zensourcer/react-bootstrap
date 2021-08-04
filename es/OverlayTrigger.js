@@ -150,8 +150,7 @@ class OverlayTrigger extends _react.default.Component {
   }
 
   componentWillUnmount() {
-    _reactDom.default.unmountComponentAtNode(this._mountNode);
-
+    // ReactDOM.unmountComponentAtNode(this._mountNode);
     this._mountNode = null;
     clearTimeout(this._hoverShowDelay);
     clearTimeout(this._hoverHideDelay);
@@ -251,7 +250,7 @@ class OverlayTrigger extends _react.default.Component {
   }
 
   renderOverlay() {
-    _reactDom.default.unstable_renderSubtreeIntoContainer(this, this._overlay, this._mountNode);
+    _reactDom.default.createPortal(this._overlay, this._mountNode);
   }
 
   render() {
