@@ -112,7 +112,9 @@ class OverlayTrigger extends React.Component {
     this.handleMouseOut = e =>
       this.handleMouseOverOut(this.handleDelayedHide, e, 'toElement');
 
-    this._mountNode = document.createElement('div');
+    if (document) {
+      this._mountNode = document.createElement('div');
+    }
 
     this.state = {
       show: props.defaultOverlayShown
