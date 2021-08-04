@@ -112,7 +112,7 @@ class OverlayTrigger extends React.Component {
     this.handleMouseOut = e =>
       this.handleMouseOverOut(this.handleDelayedHide, e, 'toElement');
 
-    this._mountNode = null;
+    this._mountNode = document.createElement('div');
 
     this.state = {
       show: props.defaultOverlayShown
@@ -120,15 +120,17 @@ class OverlayTrigger extends React.Component {
   }
 
   componentDidMount() {
-    this._mountNode = document.createElement('div');
+    const modalRoot = document.getElementById('app-root');
+    modalRoot.appendChild(this._mountNode);
   }
 
   componentDidUpdate() {}
 
   componentWillUnmount() {
     // ReactDOM.unmountComponentAtNode(this._mountNode);
-    this._mountNode = null;
 
+    const modalRoot = document.getElementById('app-root');
+    modalRoot.removeChild(this._mountNode);
     clearTimeout(this._hoverShowDelay);
     clearTimeout(this._hoverHideDelay);
   }
