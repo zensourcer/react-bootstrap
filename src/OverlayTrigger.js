@@ -121,12 +121,9 @@ class OverlayTrigger extends React.Component {
 
   componentDidMount() {
     this._mountNode = document.createElement('div');
-    this.renderOverlay();
   }
 
-  componentDidUpdate() {
-    this.renderOverlay();
-  }
+  componentDidUpdate() {}
 
   componentWillUnmount() {
     // ReactDOM.unmountComponentAtNode(this._mountNode);
@@ -232,9 +229,7 @@ class OverlayTrigger extends React.Component {
     this.setState({ show: true });
   }
 
-  renderOverlay() {
-    ReactDOM.createPortal(this._overlay, this._mountNode);
-  }
+  renderOverlay() {}
 
   render() {
     const {
@@ -310,7 +305,12 @@ class OverlayTrigger extends React.Component {
 
     this._overlay = this.makeOverlay(overlay, props);
 
-    return cloneElement(child, triggerProps);
+    return (
+      <>
+        {cloneElement(child, triggerProps)}
+        {ReactDOM.createPortal(this._overlay, this._mountNode)}
+      </>
+    );
   }
 }
 
