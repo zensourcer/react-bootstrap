@@ -9,6 +9,7 @@
   "parser": "babel-eslint",
   "plugins": ["react", "prettier"],
   "rules": {
+    "camelcase": "off",
     "max-len": "off",
     "no-plusplus": "off",
     "prefer-const": "off",

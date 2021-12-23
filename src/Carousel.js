@@ -99,7 +99,7 @@ class Carousel extends React.Component {
     this.waitForNext();
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     const activeIndex = this.getActiveIndex();
 
     if (

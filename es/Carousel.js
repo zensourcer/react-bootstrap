@@ -117,7 +117,7 @@ class Carousel extends _react.default.Component {
     this.waitForNext();
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     const activeIndex = this.getActiveIndex();
 
     if (nextProps.activeIndex != null && nextProps.activeIndex !== activeIndex) {
