@@ -11,7 +11,7 @@ var _propTypes = _interopRequireDefault(require("prop-types"));
 
 var _react = _interopRequireDefault(require("react"));
 
-var _uncontrollable = _interopRequireDefault(require("uncontrollable"));
+var _uncontrollable = require("uncontrollable");
 
 var _warning = _interopRequireDefault(require("warning"));
 
@@ -148,7 +148,7 @@ class Panel extends _react.default.Component {
 Panel.propTypes = propTypes;
 Panel.contextTypes = contextTypes;
 Panel.childContextTypes = childContextTypes;
-const UncontrolledPanel = (0, _uncontrollable.default)((0, _bootstrapUtils.bsClass)('panel', (0, _bootstrapUtils.bsStyles)([...Object.values(_StyleConfig.State), _StyleConfig.Style.DEFAULT, _StyleConfig.Style.PRIMARY], _StyleConfig.Style.DEFAULT, Panel)), {
+const UncontrolledPanel = (0, _uncontrollable.uncontrollable)((0, _bootstrapUtils.bsClass)('panel', (0, _bootstrapUtils.bsStyles)([...Object.values(_StyleConfig.State), _StyleConfig.Style.DEFAULT, _StyleConfig.Style.PRIMARY], _StyleConfig.Style.DEFAULT, Panel)), {
   expanded: 'onToggle'
 });
 Object.assign(UncontrolledPanel, {
