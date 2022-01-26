@@ -13,7 +13,7 @@ var _propTypes = _interopRequireDefault(require("prop-types"));
 
 var _elementType = _interopRequireDefault(require("prop-types-extra/lib/elementType"));
 
-var _uncontrollable = _interopRequireDefault(require("uncontrollable"));
+var _uncontrollable = require("uncontrollable");
 
 var _Grid = _interopRequireDefault(require("./Grid"));
 
@@ -221,7 +221,7 @@ Navbar.propTypes = propTypes;
 Navbar.defaultProps = defaultProps;
 Navbar.childContextTypes = childContextTypes;
 (0, _bootstrapUtils.bsClass)('navbar', Navbar);
-const UncontrollableNavbar = (0, _uncontrollable.default)(Navbar, {
+const UncontrollableNavbar = (0, _uncontrollable.uncontrollable)(Navbar, {
   expanded: 'onToggle'
 });
 
