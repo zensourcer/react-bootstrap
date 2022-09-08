@@ -11,3 +11,11 @@ dist/
 tmp-*-repo/
 .babel-cache/
 coverage/
+
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
