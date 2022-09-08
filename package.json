@@ -51,7 +51,6 @@
   ],
   "author": "Stephen J. Collings <stevoland@gmail.com>",
   "license": "MIT",
-  "peerDependencies": {},
   "devDependencies": {
     "@babel/cli": "^7.0.0",
     "@babel/core": "^7.4.5",
@@ -128,5 +127,6 @@
     "bowerRepo": "git@github.com:react-bootstrap/react-bootstrap-bower.git",
     "docsRepo": "git@github.com:react-bootstrap/react-bootstrap.github.io.git",
     "docsRoot": "www/public/"
-  }
+  },
+  "packageManager": "yarn@3.2.3"
 }
