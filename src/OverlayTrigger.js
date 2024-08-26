@@ -1,6 +1,6 @@
 import contains from 'dom-helpers/query/contains';
-import React, { cloneElement } from 'react';
 import PropTypes from 'prop-types';
+import React, { cloneElement } from 'react';
 import ReactDOM from 'react-dom';
 import warning from 'warning';
 
@@ -121,6 +121,7 @@ class OverlayTrigger extends React.Component {
 
   componentDidMount() {
     this._mountNode = document.createElement('div');
+    document.body.appendChild(this._mountNode);
     this.renderOverlay();
   }
 
@@ -130,6 +131,7 @@ class OverlayTrigger extends React.Component {
 
   componentWillUnmount() {
     ReactDOM.unmountComponentAtNode(this._mountNode);
+    document.body.removeChild(this._mountNode);
     this._mountNode = null;
 
     clearTimeout(this._hoverShowDelay);
@@ -233,11 +235,7 @@ class OverlayTrigger extends React.Component {
   }
 
   renderOverlay() {
-    ReactDOM.unstable_renderSubtreeIntoContainer(
-      this,
-      this._overlay,
-      this._mountNode
-    );
+    ReactDOM.createPortal(this._overlay, this._mountNode);
   }
 
   render() {

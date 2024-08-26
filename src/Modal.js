@@ -3,12 +3,12 @@ import events from 'dom-helpers/events';
 import ownerDocument from 'dom-helpers/ownerDocument';
 import canUseDOM from 'dom-helpers/util/inDOM';
 import getScrollbarSize from 'dom-helpers/util/scrollbarSize';
-import React from 'react';
 import PropTypes from 'prop-types';
+import elementType from 'prop-types-extra/lib/elementType';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import BaseModal from 'react-overlays/lib/Modal';
 import isOverflowing from 'react-overlays/lib/utils/isOverflowing';
-import elementType from 'prop-types-extra/lib/elementType';
 
 import Fade from './Fade';
 import Body from './ModalBody';
@@ -128,12 +128,6 @@ const defaultProps = {
   dialogComponentClass: ModalDialog
 };
 
-const childContextTypes = {
-  $bs_modal: PropTypes.shape({
-    onHide: PropTypes.func
-  })
-};
-
 /* eslint-disable no-use-before-define, react/no-multi-comp */
 function DialogTransition(props) {
   return <Fade {...props} timeout={Modal.TRANSITION_DURATION} />;
@@ -144,6 +138,10 @@ function BackdropTransition(props) {
 }
 
 /* eslint-enable no-use-before-define */
+
+export const ModalContext = React.createContext({
+  onHide: () => {}
+});
 
 class Modal extends React.Component {
   constructor(props, context) {
@@ -157,14 +155,6 @@ class Modal extends React.Component {
 
     this.state = {
       style: {}
-    };
-  }
-
-  getChildContext() {
-    return {
-      $bs_modal: {
-        onHide: this.props.onHide
-      }
     };
   }
 
@@ -249,38 +239,39 @@ class Modal extends React.Component {
     const inClassName = show && !animation && 'in';
 
     return (
-      <BaseModal
-        {...baseModalProps}
-        ref={this.setModalRef}
-        show={show}
-        containerClassName={prefix(props, 'open')}
-        transition={animation ? DialogTransition : undefined}
-        backdrop={backdrop}
-        backdropTransition={animation ? BackdropTransition : undefined}
-        backdropClassName={classNames(
-          prefix(props, 'backdrop'),
-          backdropClassName,
-          inClassName
-        )}
-        onEntering={createChainedFunction(onEntering, this.handleEntering)}
-        onExited={createChainedFunction(onExited, this.handleExited)}
-      >
-        <Dialog
-          {...dialogProps}
-          style={{ ...this.state.style, ...style }}
-          className={classNames(className, inClassName)}
-          onClick={backdrop === true ? this.handleDialogClick : null}
+      <ModalContext.Provider value={{ onHide: this.props.onHide }}>
+        <BaseModal
+          {...baseModalProps}
+          ref={this.setModalRef}
+          show={show}
+          containerClassName={prefix(props, 'open')}
+          transition={animation ? DialogTransition : undefined}
+          backdrop={backdrop}
+          backdropTransition={animation ? BackdropTransition : undefined}
+          backdropClassName={classNames(
+            prefix(props, 'backdrop'),
+            backdropClassName,
+            inClassName
+          )}
+          onEntering={createChainedFunction(onEntering, this.handleEntering)}
+          onExited={createChainedFunction(onExited, this.handleExited)}
         >
-          {children}
-        </Dialog>
-      </BaseModal>
+          <Dialog
+            {...dialogProps}
+            style={{ ...this.state.style, ...style }}
+            className={classNames(className, inClassName)}
+            onClick={backdrop === true ? this.handleDialogClick : null}
+          >
+            {children}
+          </Dialog>
+        </BaseModal>
+      </ModalContext.Provider>
     );
   }
 }
 
 Modal.propTypes = propTypes;
 Modal.defaultProps = defaultProps;
-Modal.childContextTypes = childContextTypes;
 
 Modal.Body = Body;
 Modal.Header = Header;
