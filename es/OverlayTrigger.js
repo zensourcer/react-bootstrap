@@ -7,9 +7,9 @@ exports.default = void 0;
 
 var _contains = _interopRequireDefault(require("dom-helpers/query/contains"));
 
-var _react = _interopRequireWildcard(require("react"));
-
 var _propTypes = _interopRequireDefault(require("prop-types"));
+
+var _react = _interopRequireWildcard(require("react"));
 
 var _reactDom = _interopRequireDefault(require("react-dom"));
 
@@ -142,6 +142,7 @@ class OverlayTrigger extends _react.default.Component {
 
   componentDidMount() {
     this._mountNode = document.createElement('div');
+    document.body.appendChild(this._mountNode);
     this.renderOverlay();
   }
 
@@ -152,6 +153,7 @@ class OverlayTrigger extends _react.default.Component {
   componentWillUnmount() {
     _reactDom.default.unmountComponentAtNode(this._mountNode);
 
+    document.body.removeChild(this._mountNode);
     this._mountNode = null;
     clearTimeout(this._hoverShowDelay);
     clearTimeout(this._hoverHideDelay);
@@ -251,7 +253,7 @@ class OverlayTrigger extends _react.default.Component {
   }
 
   renderOverlay() {
-    _reactDom.default.unstable_renderSubtreeIntoContainer(this, this._overlay, this._mountNode);
+    _reactDom.default.createPortal(this._overlay, this._mountNode);
   }
 
   render() {

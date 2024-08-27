@@ -11,11 +11,13 @@ var _propTypes = _interopRequireDefault(require("prop-types"));
 
 var _react = _interopRequireDefault(require("react"));
 
+var _Modal = require("./Modal");
+
+var _CloseButton = _interopRequireDefault(require("./CloseButton"));
+
 var _bootstrapUtils = require("./utils/bootstrapUtils");
 
 var _createChainedFunction = _interopRequireDefault(require("./utils/createChainedFunction"));
-
-var _CloseButton = _interopRequireDefault(require("./CloseButton"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -46,11 +48,6 @@ const defaultProps = {
   closeLabel: 'Close',
   closeButton: false
 };
-const contextTypes = {
-  $bs_modal: _propTypes.default.shape({
-    onHide: _propTypes.default.func
-  })
-};
 
 class ModalHeader extends _react.default.Component {
   render() {
@@ -62,22 +59,20 @@ class ModalHeader extends _react.default.Component {
       children,
       ...props
     } = this.props;
-    const modal = this.context.$bs_modal;
     const [bsProps, elementProps] = (0, _bootstrapUtils.splitBsProps)(props);
     const classes = (0, _bootstrapUtils.getClassSet)(bsProps);
-    return _react.default.createElement("div", _extends({}, elementProps, {
+    return _react.default.createElement(_Modal.ModalContext.Consumer, null, modal => _react.default.createElement("div", _extends({}, elementProps, {
       className: (0, _classnames.default)(className, classes)
     }), closeButton && _react.default.createElement(_CloseButton.default, {
       label: closeLabel,
       onClick: (0, _createChainedFunction.default)(modal && modal.onHide, onHide)
-    }), children);
+    }), children));
   }
 
 }
 
 ModalHeader.propTypes = propTypes;
 ModalHeader.defaultProps = defaultProps;
-ModalHeader.contextTypes = contextTypes;
 
 var _default = (0, _bootstrapUtils.bsClass)('modal-header', ModalHeader);
 

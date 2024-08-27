@@ -1,10 +1,11 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { ModalContext } from './Modal';
 
+import CloseButton from './CloseButton';
 import { bsClass, getClassSet, splitBsProps } from './utils/bootstrapUtils';
 import createChainedFunction from './utils/createChainedFunction';
-import CloseButton from './CloseButton';
 
 // TODO: `aria-label` should be `closeLabel`.
 
@@ -34,12 +35,6 @@ const defaultProps = {
   closeButton: false
 };
 
-const contextTypes = {
-  $bs_modal: PropTypes.shape({
-    onHide: PropTypes.func
-  })
-};
-
 class ModalHeader extends React.Component {
   render() {
     const {
@@ -51,29 +46,30 @@ class ModalHeader extends React.Component {
       ...props
     } = this.props;
 
-    const modal = this.context.$bs_modal;
-
     const [bsProps, elementProps] = splitBsProps(props);
 
     const classes = getClassSet(bsProps);
 
     return (
-      <div {...elementProps} className={classNames(className, classes)}>
-        {closeButton && (
-          <CloseButton
-            label={closeLabel}
-            onClick={createChainedFunction(modal && modal.onHide, onHide)}
-          />
-        )}
+      <ModalContext.Consumer>
+        {modal => (
+          <div {...elementProps} className={classNames(className, classes)}>
+            {closeButton && (
+              <CloseButton
+                label={closeLabel}
+                onClick={createChainedFunction(modal && modal.onHide, onHide)}
+              />
+            )}
 
-        {children}
-      </div>
+            {children}
+          </div>
+        )}
+      </ModalContext.Consumer>
     );
   }
 }
 
 ModalHeader.propTypes = propTypes;
 ModalHeader.defaultProps = defaultProps;
-ModalHeader.contextTypes = contextTypes;
 
 export default bsClass('modal-header', ModalHeader);
