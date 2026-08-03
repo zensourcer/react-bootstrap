@@ -17,6 +17,7 @@ import Title from './PanelTitle';
 import Footer from './PanelFooter';
 import Toggle from './PanelToggle';
 import Collapse from './PanelCollapse';
+import bsContext from './utils/bsContext';
 
 const has = Object.prototype.hasOwnProperty;
 
@@ -45,26 +46,8 @@ const propTypes = {
   id: PropTypes.string
 };
 
-const contextTypes = {
-  $bs_panelGroup: PropTypes.shape({
-    getId: PropTypes.func,
-    activeKey: PropTypes.any,
-    onToggle: PropTypes.func
-  })
-};
-
-const childContextTypes = {
-  $bs_panel: PropTypes.shape({
-    headingId: PropTypes.string,
-    bodyId: PropTypes.string,
-    bsClass: PropTypes.string,
-    onToggle: PropTypes.func,
-    expanded: PropTypes.bool
-  })
-};
-
 class Panel extends React.Component {
-  getChildContext() {
+  getBsChildContext() {
     const { eventKey, id } = this.props;
     const idKey = eventKey == null ? id : eventKey;
 
@@ -118,7 +101,7 @@ class Panel extends React.Component {
     }
   };
 
-  render() {
+  renderBsChildren() {
     let { className, children } = this.props;
     const [bsProps, props] = splitBsPropsAndOmit(this.props, [
       'onToggle',
@@ -132,12 +115,21 @@ class Panel extends React.Component {
       </div>
     );
   }
+
+  render() {
+    return (
+      <bsContext.Provider
+        value={{ ...this.context, ...this.getBsChildContext() }}
+      >
+        {this.renderBsChildren()}
+      </bsContext.Provider>
+    );
+  }
 }
 
 Panel.propTypes = propTypes;
 
-Panel.contextTypes = contextTypes;
-Panel.childContextTypes = childContextTypes;
+Panel.contextType = bsContext;
 
 const UncontrolledPanel = uncontrollable(
   bsClass(

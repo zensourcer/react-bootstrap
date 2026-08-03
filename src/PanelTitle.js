@@ -4,6 +4,7 @@ import React from 'react';
 import elementType from 'react-prop-types/lib/elementType';
 
 import { prefix, splitBsProps, bsClass } from './utils/bootstrapUtils';
+import bsContext from './utils/bsContext';
 import PanelToggle from './PanelToggle';
 
 const propTypes = {
@@ -13,12 +14,6 @@ const propTypes = {
    * for the common use-case.
    */
   toggle: PropTypes.bool
-};
-
-const contextTypes = {
-  $bs_panel: PropTypes.shape({
-    bsClass: PropTypes.string
-  })
 };
 
 const defaultProps = {
@@ -57,6 +52,6 @@ class PanelTitle extends React.Component {
 
 PanelTitle.propTypes = propTypes;
 PanelTitle.defaultProps = defaultProps;
-PanelTitle.contextTypes = contextTypes;
+PanelTitle.contextType = bsContext;
 
 export default bsClass('panel', PanelTitle);

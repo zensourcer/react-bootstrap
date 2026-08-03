@@ -15,6 +15,8 @@ var _warning = _interopRequireDefault(require("warning"));
 
 var _bootstrapUtils = require("./utils/bootstrapUtils");
 
+var _bsContext = _interopRequireDefault(require("./utils/bsContext"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
@@ -28,9 +30,6 @@ const propTypes = {
 };
 const defaultProps = {
   srOnly: false
-};
-const contextTypes = {
-  $bs_formGroup: _propTypes.default.object
 };
 
 class ControlLabel extends _react.default.Component {
@@ -58,7 +57,7 @@ class ControlLabel extends _react.default.Component {
 
 ControlLabel.propTypes = propTypes;
 ControlLabel.defaultProps = defaultProps;
-ControlLabel.contextTypes = contextTypes;
+ControlLabel.contextType = _bsContext.default;
 
 var _default = (0, _bootstrapUtils.bsClass)('control-label', ControlLabel);
 

@@ -19,6 +19,8 @@ var _ValidComponentChildren = _interopRequireDefault(require("./utils/ValidCompo
 
 var _PropTypes = require("./utils/PropTypes");
 
+var _bsContext = _interopRequireDefault(require("./utils/bsContext"));
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -69,15 +71,6 @@ const propTypes = {
 const defaultProps = {
   accordion: false
 };
-const childContextTypes = {
-  $bs_panelGroup: _propTypes.default.shape({
-    getId: _propTypes.default.func,
-    headerRole: _propTypes.default.string,
-    panelRole: _propTypes.default.string,
-    activeKey: _propTypes.default.any,
-    onToggle: _propTypes.default.func
-  })
-};
 
 class PanelGroup extends _react.default.Component {
   constructor(...args) {
@@ -92,7 +85,7 @@ class PanelGroup extends _react.default.Component {
     };
   }
 
-  getChildContext() {
+  getBsChildContext() {
     const {
       activeKey,
       accordion,
@@ -118,7 +111,7 @@ class PanelGroup extends _react.default.Component {
     };
   }
 
-  render() {
+  renderBsChildren() {
     const {
       accordion,
       className,
@@ -139,11 +132,19 @@ class PanelGroup extends _react.default.Component {
     })));
   }
 
+  render() {
+    return _react.default.createElement(_bsContext.default.Provider, {
+      value: { ...this.context,
+        ...this.getBsChildContext()
+      }
+    }, this.renderBsChildren());
+  }
+
 }
 
 PanelGroup.propTypes = propTypes;
 PanelGroup.defaultProps = defaultProps;
-PanelGroup.childContextTypes = childContextTypes;
+PanelGroup.contextType = _bsContext.default;
 
 var _default = (0, _uncontrollable.uncontrollable)((0, _bootstrapUtils.bsClass)('panel-group', PanelGroup), {
   activeKey: 'onSelect'

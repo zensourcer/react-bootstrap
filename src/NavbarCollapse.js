@@ -3,13 +3,7 @@ import PropTypes from 'prop-types';
 
 import Collapse from './Collapse';
 import { prefix } from './utils/bootstrapUtils';
-
-const contextTypes = {
-  $bs_navbar: PropTypes.shape({
-    bsClass: PropTypes.string,
-    expanded: PropTypes.bool
-  })
-};
+import bsContext from './utils/bsContext';
 
 class NavbarCollapse extends React.Component {
   render() {
@@ -26,6 +20,6 @@ class NavbarCollapse extends React.Component {
   }
 }
 
-NavbarCollapse.contextTypes = contextTypes;
+NavbarCollapse.contextType = bsContext;
 
 export default NavbarCollapse;

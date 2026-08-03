@@ -10,6 +10,7 @@ import {
 } from './utils/bootstrapUtils';
 import { Size } from './utils/StyleConfig';
 import ValidComponentChildren from './utils/ValidComponentChildren';
+import bsContext from './utils/bsContext';
 
 const propTypes = {
   /**
@@ -19,12 +20,8 @@ const propTypes = {
   validationState: PropTypes.oneOf(['success', 'warning', 'error', null])
 };
 
-const childContextTypes = {
-  $bs_formGroup: PropTypes.object.isRequired
-};
-
 class FormGroup extends React.Component {
-  getChildContext() {
+  getBsChildContext() {
     const { controlId, validationState } = this.props;
 
     return {
@@ -44,7 +41,7 @@ class FormGroup extends React.Component {
     );
   }
 
-  render() {
+  renderBsChildren() {
     const { validationState, className, children, ...props } = this.props;
     const [bsProps, elementProps] = splitBsPropsAndOmit(props, ['controlId']);
 
@@ -62,10 +59,20 @@ class FormGroup extends React.Component {
       </div>
     );
   }
+
+  render() {
+    return (
+      <bsContext.Provider
+        value={{ ...this.context, ...this.getBsChildContext() }}
+      >
+        {this.renderBsChildren()}
+      </bsContext.Provider>
+    );
+  }
 }
 
 FormGroup.propTypes = propTypes;
-FormGroup.childContextTypes = childContextTypes;
+FormGroup.contextType = bsContext;
 
 export default bsClass(
   'form-group',

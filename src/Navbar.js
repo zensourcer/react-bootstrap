@@ -2,7 +2,7 @@
 /* eslint-disable react/no-multi-comp */
 
 import classNames from 'classnames';
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import elementType from 'prop-types-extra/lib/elementType';
 import { uncontrollable } from 'uncontrollable';
@@ -21,6 +21,7 @@ import {
 } from './utils/bootstrapUtils';
 import { Style } from './utils/StyleConfig';
 import createChainedFunction from './utils/createChainedFunction';
+import bsContext from './utils/bsContext';
 
 const propTypes = {
   /**
@@ -109,15 +110,6 @@ const defaultProps = {
   collapseOnSelect: false
 };
 
-const childContextTypes = {
-  $bs_navbar: PropTypes.shape({
-    bsClass: PropTypes.string,
-    expanded: PropTypes.bool,
-    onToggle: PropTypes.func.isRequired,
-    onSelect: PropTypes.func
-  })
-};
-
 class Navbar extends React.Component {
   constructor(props, context) {
     super(props, context);
@@ -126,7 +118,7 @@ class Navbar extends React.Component {
     this.handleCollapse = this.handleCollapse.bind(this);
   }
 
-  getChildContext() {
+  getBsChildContext() {
     const { bsClass, expanded, onSelect, collapseOnSelect } = this.props;
 
     return {
@@ -156,7 +148,7 @@ class Navbar extends React.Component {
     onToggle(!expanded);
   }
 
-  render() {
+  renderBsChildren() {
     const {
       componentClass: Component,
       fixedTop,
@@ -200,31 +192,52 @@ class Navbar extends React.Component {
       </Component>
     );
   }
+
+  render() {
+    return (
+      <bsContext.Provider
+        value={{ ...this.context, ...this.getBsChildContext() }}
+      >
+        {this.renderBsChildren()}
+      </bsContext.Provider>
+    );
+  }
 }
 
 Navbar.propTypes = propTypes;
 Navbar.defaultProps = defaultProps;
-Navbar.childContextTypes = childContextTypes;
+Navbar.contextType = bsContext;
 
 setBsClass('navbar', Navbar);
 
 const UncontrollableNavbar = uncontrollable(Navbar, { expanded: 'onToggle' });
 
 function createSimpleWrapper(tag, suffix, displayName) {
-  const Wrapper = (
-    { componentClass: Component, className, pullRight, pullLeft, ...props },
-    { $bs_navbar: navbarProps = { bsClass: 'navbar' } }
-  ) => (
-    <Component
-      {...props}
-      className={classNames(
-        className,
-        prefix(navbarProps, suffix),
-        pullRight && prefix(navbarProps, 'right'),
-        pullLeft && prefix(navbarProps, 'left')
-      )}
-    />
-  );
+  const Wrapper = ({
+    componentClass: Component,
+    className,
+    pullRight,
+    pullLeft,
+    ...props
+  }) => {
+    // Wrapper is a function component, so it reads the context with a hook.
+    // contextType only applies to classes and would silently do nothing here.
+    const { $bs_navbar: navbarProps = { bsClass: 'navbar' } } = useContext(
+      bsContext
+    );
+
+    return (
+      <Component
+        {...props}
+        className={classNames(
+          className,
+          prefix(navbarProps, suffix),
+          pullRight && prefix(navbarProps, 'right'),
+          pullLeft && prefix(navbarProps, 'left')
+        )}
+      />
+    );
+  };
 
   Wrapper.displayName = displayName;
 
@@ -238,12 +251,6 @@ function createSimpleWrapper(tag, suffix, displayName) {
     componentClass: tag,
     pullRight: false,
     pullLeft: false
-  };
-
-  Wrapper.contextTypes = {
-    $bs_navbar: PropTypes.shape({
-      bsClass: PropTypes.string
-    })
   };
 
   return Wrapper;

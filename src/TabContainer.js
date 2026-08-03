@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { uncontrollable } from 'uncontrollable';
+import bsContext from './utils/bsContext';
 
 const TAB = 'tab';
 const PANE = 'pane';
@@ -58,17 +59,8 @@ const propTypes = {
   activeKey: PropTypes.any
 };
 
-const childContextTypes = {
-  $bs_tabContainer: PropTypes.shape({
-    activeKey: PropTypes.any,
-    onSelect: PropTypes.func.isRequired,
-    getTabId: PropTypes.func.isRequired,
-    getPaneId: PropTypes.func.isRequired
-  })
-};
-
 class TabContainer extends React.Component {
-  getChildContext() {
+  getBsChildContext() {
     const { activeKey, onSelect, generateChildId, id } = this.props;
 
     const getId =
@@ -84,7 +76,7 @@ class TabContainer extends React.Component {
     };
   }
 
-  render() {
+  renderBsChildren() {
     const { children, ...props } = this.props;
 
     delete props.generateChildId;
@@ -93,9 +85,19 @@ class TabContainer extends React.Component {
 
     return React.cloneElement(React.Children.only(children), props);
   }
+
+  render() {
+    return (
+      <bsContext.Provider
+        value={{ ...this.context, ...this.getBsChildContext() }}
+      >
+        {this.renderBsChildren()}
+      </bsContext.Provider>
+    );
+  }
 }
 
 TabContainer.propTypes = propTypes;
-TabContainer.childContextTypes = childContextTypes;
+TabContainer.contextType = bsContext;
 
 export default uncontrollable(TabContainer, { activeKey: 'onSelect' });

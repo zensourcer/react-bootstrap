@@ -14,6 +14,7 @@ import {
   bsSizes
 } from './utils/bootstrapUtils';
 import { SIZE_MAP, Size } from './utils/StyleConfig';
+import bsContext from './utils/bsContext';
 
 const propTypes = {
   componentClass: elementType,
@@ -37,10 +38,6 @@ const propTypes = {
 
 const defaultProps = {
   componentClass: 'input'
-};
-
-const contextTypes = {
-  $bs_formGroup: PropTypes.object
 };
 
 class FormControl extends React.Component {
@@ -92,7 +89,7 @@ class FormControl extends React.Component {
 
 FormControl.propTypes = propTypes;
 FormControl.defaultProps = defaultProps;
-FormControl.contextTypes = contextTypes;
+FormControl.contextType = bsContext;
 
 FormControl.Feedback = FormControlFeedback;
 FormControl.Static = FormControlStatic;

@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import warning from 'warning';
 
 import { bsClass, getClassSet, splitBsProps } from './utils/bootstrapUtils';
+import bsContext from './utils/bsContext';
 
 const propTypes = {
   /**
@@ -15,10 +16,6 @@ const propTypes = {
 
 const defaultProps = {
   srOnly: false
-};
-
-const contextTypes = {
-  $bs_formGroup: PropTypes.object
 };
 
 class ControlLabel extends React.Component {
@@ -51,6 +48,6 @@ class ControlLabel extends React.Component {
 
 ControlLabel.propTypes = propTypes;
 ControlLabel.defaultProps = defaultProps;
-ControlLabel.contextTypes = contextTypes;
+ControlLabel.contextType = bsContext;
 
 export default bsClass('control-label', ControlLabel);

@@ -13,6 +13,7 @@ import {
 import createChainedFunction from './utils/createChainedFunction';
 
 import Fade from './Fade';
+import bsContext from './utils/bsContext';
 
 const propTypes = {
   /**
@@ -81,31 +82,10 @@ const propTypes = {
   unmountOnExit: PropTypes.bool
 };
 
-const contextTypes = {
-  $bs_tabContainer: PropTypes.shape({
-    getTabId: PropTypes.func,
-    getPaneId: PropTypes.func
-  }),
-  $bs_tabContent: PropTypes.shape({
-    bsClass: PropTypes.string,
-    animation: PropTypes.oneOfType([PropTypes.bool, elementType]),
-    activeKey: PropTypes.any,
-    mountOnEnter: PropTypes.bool,
-    unmountOnExit: PropTypes.bool,
-    onPaneEnter: PropTypes.func.isRequired,
-    onPaneExited: PropTypes.func.isRequired,
-    exiting: PropTypes.bool.isRequired
-  })
-};
-
 /**
  * We override the `<TabContainer>` context so `<Nav>`s in `<TabPane>`s don't
  * conflict with the top level one.
  */
-const childContextTypes = {
-  $bs_tabContainer: PropTypes.oneOf([null])
-};
-
 class TabPane extends React.Component {
   constructor(props, context) {
     super(props, context);
@@ -116,7 +96,7 @@ class TabPane extends React.Component {
     this.in = false;
   }
 
-  getChildContext() {
+  getBsChildContext() {
     return {
       $bs_tabContainer: null
     };
@@ -187,7 +167,7 @@ class TabPane extends React.Component {
     return this.getAnimation() && this.isActive();
   }
 
-  render() {
+  renderBsChildren() {
     const {
       eventKey,
       className,
@@ -281,10 +261,19 @@ class TabPane extends React.Component {
 
     return pane;
   }
+
+  render() {
+    return (
+      <bsContext.Provider
+        value={{ ...this.context, ...this.getBsChildContext() }}
+      >
+        {this.renderBsChildren()}
+      </bsContext.Provider>
+    );
+  }
 }
 
 TabPane.propTypes = propTypes;
-TabPane.contextTypes = contextTypes;
-TabPane.childContextTypes = childContextTypes;
+TabPane.contextType = bsContext;
 
 export default bsClass('tab-pane', TabPane);

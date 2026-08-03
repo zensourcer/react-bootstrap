@@ -4,13 +4,10 @@ import PropTypes from 'prop-types';
 
 import Glyphicon from './Glyphicon';
 import { bsClass, getClassSet, splitBsProps } from './utils/bootstrapUtils';
+import bsContext from './utils/bsContext';
 
 const defaultProps = {
   bsRole: 'feedback'
-};
-
-const contextTypes = {
-  $bs_formGroup: PropTypes.object
 };
 
 class FormControlFeedback extends React.Component {
@@ -66,6 +63,6 @@ class FormControlFeedback extends React.Component {
 }
 
 FormControlFeedback.defaultProps = defaultProps;
-FormControlFeedback.contextTypes = contextTypes;
+FormControlFeedback.contextType = bsContext;
 
 export default bsClass('form-control-feedback', FormControlFeedback);

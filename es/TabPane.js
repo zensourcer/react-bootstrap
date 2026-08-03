@@ -21,6 +21,8 @@ var _createChainedFunction = _interopRequireDefault(require("./utils/createChain
 
 var _Fade = _interopRequireDefault(require("./Fade"));
 
+var _bsContext = _interopRequireDefault(require("./utils/bsContext"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
@@ -91,30 +93,10 @@ const propTypes = {
    */
   unmountOnExit: _propTypes.default.bool
 };
-const contextTypes = {
-  $bs_tabContainer: _propTypes.default.shape({
-    getTabId: _propTypes.default.func,
-    getPaneId: _propTypes.default.func
-  }),
-  $bs_tabContent: _propTypes.default.shape({
-    bsClass: _propTypes.default.string,
-    animation: _propTypes.default.oneOfType([_propTypes.default.bool, _elementType.default]),
-    activeKey: _propTypes.default.any,
-    mountOnEnter: _propTypes.default.bool,
-    unmountOnExit: _propTypes.default.bool,
-    onPaneEnter: _propTypes.default.func.isRequired,
-    onPaneExited: _propTypes.default.func.isRequired,
-    exiting: _propTypes.default.bool.isRequired
-  })
-};
 /**
  * We override the `<TabContainer>` context so `<Nav>`s in `<TabPane>`s don't
  * conflict with the top level one.
  */
-
-const childContextTypes = {
-  $bs_tabContainer: _propTypes.default.oneOf([null])
-};
 
 class TabPane extends _react.default.Component {
   constructor(props, context) {
@@ -124,7 +106,7 @@ class TabPane extends _react.default.Component {
     this.in = false;
   }
 
-  getChildContext() {
+  getBsChildContext() {
     return {
       $bs_tabContainer: null
     };
@@ -196,7 +178,7 @@ class TabPane extends _react.default.Component {
     return this.getAnimation() && this.isActive();
   }
 
-  render() {
+  renderBsChildren() {
     const {
       eventKey,
       className,
@@ -264,11 +246,18 @@ class TabPane extends _react.default.Component {
     return pane;
   }
 
+  render() {
+    return _react.default.createElement(_bsContext.default.Provider, {
+      value: { ...this.context,
+        ...this.getBsChildContext()
+      }
+    }, this.renderBsChildren());
+  }
+
 }
 
 TabPane.propTypes = propTypes;
-TabPane.contextTypes = contextTypes;
-TabPane.childContextTypes = childContextTypes;
+TabPane.contextType = _bsContext.default;
 
 var _default = (0, _bootstrapUtils.bsClass)('tab-pane', TabPane);
 
