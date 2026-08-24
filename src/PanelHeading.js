@@ -4,6 +4,7 @@ import cn from 'classnames';
 import elementType from 'react-prop-types/lib/elementType';
 
 import { prefix, bsClass, splitBsProps } from './utils/bootstrapUtils';
+import bsContext from './utils/bsContext';
 
 const propTypes = {
   componentClass: elementType
@@ -11,13 +12,6 @@ const propTypes = {
 
 const defaultProps = {
   componentClass: 'div'
-};
-
-const contextTypes = {
-  $bs_panel: PropTypes.shape({
-    headingId: PropTypes.string,
-    bsClass: PropTypes.string
-  })
 };
 
 class PanelHeading extends React.Component {
@@ -51,6 +45,6 @@ class PanelHeading extends React.Component {
 
 PanelHeading.propTypes = propTypes;
 PanelHeading.defaultProps = defaultProps;
-PanelHeading.contextTypes = contextTypes;
+PanelHeading.contextType = bsContext;
 
 export default bsClass('panel', PanelHeading);

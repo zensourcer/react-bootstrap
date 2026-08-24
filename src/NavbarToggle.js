@@ -3,6 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { prefix } from './utils/bootstrapUtils';
+import bsContext from './utils/bsContext';
 import createChainedFunction from './utils/createChainedFunction';
 
 const propTypes = {
@@ -11,14 +12,6 @@ const propTypes = {
    * The toggle content, if left empty it will render the default toggle (seen above).
    */
   children: PropTypes.node
-};
-
-const contextTypes = {
-  $bs_navbar: PropTypes.shape({
-    bsClass: PropTypes.string,
-    expanded: PropTypes.bool,
-    onToggle: PropTypes.func.isRequired
-  })
 };
 
 class NavbarToggle extends React.Component {
@@ -53,6 +46,6 @@ class NavbarToggle extends React.Component {
 }
 
 NavbarToggle.propTypes = propTypes;
-NavbarToggle.contextTypes = contextTypes;
+NavbarToggle.contextType = bsContext;
 
 export default NavbarToggle;

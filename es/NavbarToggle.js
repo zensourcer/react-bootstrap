@@ -13,6 +13,8 @@ var _propTypes = _interopRequireDefault(require("prop-types"));
 
 var _bootstrapUtils = require("./utils/bootstrapUtils");
 
+var _bsContext = _interopRequireDefault(require("./utils/bsContext"));
+
 var _createChainedFunction = _interopRequireDefault(require("./utils/createChainedFunction"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -24,13 +26,6 @@ const propTypes = {
    * The toggle content, if left empty it will render the default toggle (seen above).
    */
   children: _propTypes.default.node
-};
-const contextTypes = {
-  $bs_navbar: _propTypes.default.shape({
-    bsClass: _propTypes.default.string,
-    expanded: _propTypes.default.bool,
-    onToggle: _propTypes.default.func.isRequired
-  })
 };
 
 class NavbarToggle extends _react.default.Component {
@@ -69,6 +64,6 @@ class NavbarToggle extends _react.default.Component {
 }
 
 NavbarToggle.propTypes = propTypes;
-NavbarToggle.contextTypes = contextTypes;
+NavbarToggle.contextType = _bsContext.default;
 var _default = NavbarToggle;
 exports.default = _default;

@@ -3,12 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { prefix } from './utils/bootstrapUtils';
-
-const contextTypes = {
-  $bs_navbar: PropTypes.shape({
-    bsClass: PropTypes.string
-  })
-};
+import bsContext from './utils/bsContext';
 
 class NavbarHeader extends React.Component {
   render() {
@@ -21,6 +16,6 @@ class NavbarHeader extends React.Component {
   }
 }
 
-NavbarHeader.contextTypes = contextTypes;
+NavbarHeader.contextType = bsContext;
 
 export default NavbarHeader;

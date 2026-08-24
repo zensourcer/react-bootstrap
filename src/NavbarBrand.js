@@ -3,12 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { prefix } from './utils/bootstrapUtils';
-
-const contextTypes = {
-  $bs_navbar: PropTypes.shape({
-    bsClass: PropTypes.string
-  })
-};
+import bsContext from './utils/bsContext';
 
 class NavbarBrand extends React.Component {
   render() {
@@ -31,6 +26,6 @@ class NavbarBrand extends React.Component {
   }
 }
 
-NavbarBrand.contextTypes = contextTypes;
+NavbarBrand.contextType = bsContext;
 
 export default NavbarBrand;

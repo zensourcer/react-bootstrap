@@ -10,6 +10,7 @@ import {
 } from './utils/bootstrapUtils';
 import ValidComponentChildren from './utils/ValidComponentChildren';
 import { generatedId } from './utils/PropTypes';
+import bsContext from './utils/bsContext';
 
 const propTypes = {
   accordion: PropTypes.bool,
@@ -56,18 +57,8 @@ const defaultProps = {
   accordion: false
 };
 
-const childContextTypes = {
-  $bs_panelGroup: PropTypes.shape({
-    getId: PropTypes.func,
-    headerRole: PropTypes.string,
-    panelRole: PropTypes.string,
-    activeKey: PropTypes.any,
-    onToggle: PropTypes.func
-  })
-};
-
 class PanelGroup extends React.Component {
-  getChildContext() {
+  getBsChildContext() {
     const { activeKey, accordion, generateChildId, id } = this.props;
     let getId = null;
 
@@ -98,7 +89,7 @@ class PanelGroup extends React.Component {
     }
   };
 
-  render() {
+  renderBsChildren() {
     const { accordion, className, children, ...props } = this.props;
 
     const [bsProps, elementProps] = splitBsPropsAndOmit(props, [
@@ -122,11 +113,21 @@ class PanelGroup extends React.Component {
       </div>
     );
   }
+
+  render() {
+    return (
+      <bsContext.Provider
+        value={{ ...this.context, ...this.getBsChildContext() }}
+      >
+        {this.renderBsChildren()}
+      </bsContext.Provider>
+    );
+  }
 }
 
 PanelGroup.propTypes = propTypes;
 PanelGroup.defaultProps = defaultProps;
-PanelGroup.childContextTypes = childContextTypes;
+PanelGroup.contextType = bsContext;
 
 export default uncontrollable(bsClass('panel-group', PanelGroup), {
   activeKey: 'onSelect'

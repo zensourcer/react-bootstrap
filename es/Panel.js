@@ -31,6 +31,8 @@ var _PanelToggle = _interopRequireDefault(require("./PanelToggle"));
 
 var _PanelCollapse = _interopRequireDefault(require("./PanelCollapse"));
 
+var _bsContext = _interopRequireDefault(require("./utils/bsContext"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
@@ -62,22 +64,6 @@ const propTypes = {
    */
   id: _propTypes.default.string
 };
-const contextTypes = {
-  $bs_panelGroup: _propTypes.default.shape({
-    getId: _propTypes.default.func,
-    activeKey: _propTypes.default.any,
-    onToggle: _propTypes.default.func
-  })
-};
-const childContextTypes = {
-  $bs_panel: _propTypes.default.shape({
-    headingId: _propTypes.default.string,
-    bodyId: _propTypes.default.string,
-    bsClass: _propTypes.default.string,
-    onToggle: _propTypes.default.func,
-    expanded: _propTypes.default.bool
-  })
-};
 
 class Panel extends _react.default.Component {
   constructor(...args) {
@@ -95,7 +81,7 @@ class Panel extends _react.default.Component {
     };
   }
 
-  getChildContext() {
+  getBsChildContext() {
     const {
       eventKey,
       id
@@ -132,7 +118,7 @@ class Panel extends _react.default.Component {
     return !!this.props.expanded;
   }
 
-  render() {
+  renderBsChildren() {
     let {
       className,
       children
@@ -143,11 +129,18 @@ class Panel extends _react.default.Component {
     }), children);
   }
 
+  render() {
+    return _react.default.createElement(_bsContext.default.Provider, {
+      value: { ...this.context,
+        ...this.getBsChildContext()
+      }
+    }, this.renderBsChildren());
+  }
+
 }
 
 Panel.propTypes = propTypes;
-Panel.contextTypes = contextTypes;
-Panel.childContextTypes = childContextTypes;
+Panel.contextType = _bsContext.default;
 const UncontrolledPanel = (0, _uncontrollable.uncontrollable)((0, _bootstrapUtils.bsClass)('panel', (0, _bootstrapUtils.bsStyles)([...Object.values(_StyleConfig.State), _StyleConfig.Style.DEFAULT, _StyleConfig.Style.PRIMARY], _StyleConfig.Style.DEFAULT, Panel)), {
   expanded: 'onToggle'
 });

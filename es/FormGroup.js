@@ -17,6 +17,8 @@ var _StyleConfig = require("./utils/StyleConfig");
 
 var _ValidComponentChildren = _interopRequireDefault(require("./utils/ValidComponentChildren"));
 
+var _bsContext = _interopRequireDefault(require("./utils/bsContext"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
@@ -28,12 +30,9 @@ const propTypes = {
   controlId: _propTypes.default.string,
   validationState: _propTypes.default.oneOf(['success', 'warning', 'error', null])
 };
-const childContextTypes = {
-  $bs_formGroup: _propTypes.default.object.isRequired
-};
 
 class FormGroup extends _react.default.Component {
-  getChildContext() {
+  getBsChildContext() {
     const {
       controlId,
       validationState
@@ -50,7 +49,7 @@ class FormGroup extends _react.default.Component {
     return _ValidComponentChildren.default.some(children, child => child.props.bsRole === 'feedback' || child.props.children && this.hasFeedback(child.props.children));
   }
 
-  render() {
+  renderBsChildren() {
     const {
       validationState,
       className,
@@ -71,10 +70,18 @@ class FormGroup extends _react.default.Component {
     }), children);
   }
 
+  render() {
+    return _react.default.createElement(_bsContext.default.Provider, {
+      value: { ...this.context,
+        ...this.getBsChildContext()
+      }
+    }, this.renderBsChildren());
+  }
+
 }
 
 FormGroup.propTypes = propTypes;
-FormGroup.childContextTypes = childContextTypes;
+FormGroup.contextType = _bsContext.default;
 
 var _default = (0, _bootstrapUtils.bsClass)('form-group', (0, _bootstrapUtils.bsSizes)([_StyleConfig.Size.LARGE, _StyleConfig.Size.SMALL], FormGroup));
 

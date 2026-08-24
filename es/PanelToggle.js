@@ -17,6 +17,8 @@ var _SafeAnchor = _interopRequireDefault(require("./SafeAnchor"));
 
 var _createChainedFunction = _interopRequireDefault(require("./utils/createChainedFunction"));
 
+var _bsContext = _interopRequireDefault(require("./utils/bsContext"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 const propTypes = {
@@ -34,13 +36,6 @@ const propTypes = {
 };
 const defaultProps = {
   componentClass: _SafeAnchor.default
-};
-const contextTypes = {
-  $bs_panel: _propTypes.default.shape({
-    bodyId: _propTypes.default.string,
-    onToggle: _propTypes.default.func,
-    expanded: _propTypes.default.bool
-  })
 };
 
 class PanelToggle extends _react.default.Component {
@@ -86,6 +81,6 @@ class PanelToggle extends _react.default.Component {
 
 PanelToggle.propTypes = propTypes;
 PanelToggle.defaultProps = defaultProps;
-PanelToggle.contextTypes = contextTypes;
+PanelToggle.contextType = _bsContext.default;
 var _default = PanelToggle;
 exports.default = _default;

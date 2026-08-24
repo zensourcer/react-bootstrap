@@ -7,7 +7,7 @@ exports.default = void 0;
 
 var _classnames = _interopRequireDefault(require("classnames"));
 
-var _react = _interopRequireDefault(require("react"));
+var _react = _interopRequireWildcard(require("react"));
 
 var _propTypes = _interopRequireDefault(require("prop-types"));
 
@@ -30,6 +30,10 @@ var _bootstrapUtils = require("./utils/bootstrapUtils");
 var _StyleConfig = require("./utils/StyleConfig");
 
 var _createChainedFunction = _interopRequireDefault(require("./utils/createChainedFunction"));
+
+var _bsContext = _interopRequireDefault(require("./utils/bsContext"));
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -127,14 +131,6 @@ const defaultProps = {
   fluid: false,
   collapseOnSelect: false
 };
-const childContextTypes = {
-  $bs_navbar: _propTypes.default.shape({
-    bsClass: _propTypes.default.string,
-    expanded: _propTypes.default.bool,
-    onToggle: _propTypes.default.func.isRequired,
-    onSelect: _propTypes.default.func
-  })
-};
 
 class Navbar extends _react.default.Component {
   constructor(props, context) {
@@ -143,7 +139,7 @@ class Navbar extends _react.default.Component {
     this.handleCollapse = this.handleCollapse.bind(this);
   }
 
-  getChildContext() {
+  getBsChildContext() {
     const {
       bsClass,
       expanded,
@@ -179,7 +175,7 @@ class Navbar extends _react.default.Component {
     onToggle(!expanded);
   }
 
-  render() {
+  renderBsChildren() {
     const {
       componentClass: Component,
       fixedTop,
@@ -215,11 +211,19 @@ class Navbar extends _react.default.Component {
     }, children));
   }
 
+  render() {
+    return _react.default.createElement(_bsContext.default.Provider, {
+      value: { ...this.context,
+        ...this.getBsChildContext()
+      }
+    }, this.renderBsChildren());
+  }
+
 }
 
 Navbar.propTypes = propTypes;
 Navbar.defaultProps = defaultProps;
-Navbar.childContextTypes = childContextTypes;
+Navbar.contextType = _bsContext.default;
 (0, _bootstrapUtils.bsClass)('navbar', Navbar);
 const UncontrollableNavbar = (0, _uncontrollable.uncontrollable)(Navbar, {
   expanded: 'onToggle'
@@ -232,13 +236,18 @@ function createSimpleWrapper(tag, suffix, displayName) {
     pullRight,
     pullLeft,
     ...props
-  }, {
-    $bs_navbar: navbarProps = {
-      bsClass: 'navbar'
-    }
-  }) => _react.default.createElement(Component, _extends({}, props, {
-    className: (0, _classnames.default)(className, (0, _bootstrapUtils.prefix)(navbarProps, suffix), pullRight && (0, _bootstrapUtils.prefix)(navbarProps, 'right'), pullLeft && (0, _bootstrapUtils.prefix)(navbarProps, 'left'))
-  }));
+  }) => {
+    // Wrapper is a function component, so it reads the context with a hook.
+    // contextType only applies to classes and would silently do nothing here.
+    const {
+      $bs_navbar: navbarProps = {
+        bsClass: 'navbar'
+      }
+    } = (0, _react.useContext)(_bsContext.default);
+    return _react.default.createElement(Component, _extends({}, props, {
+      className: (0, _classnames.default)(className, (0, _bootstrapUtils.prefix)(navbarProps, suffix), pullRight && (0, _bootstrapUtils.prefix)(navbarProps, 'right'), pullLeft && (0, _bootstrapUtils.prefix)(navbarProps, 'left'))
+    }));
+  };
 
   Wrapper.displayName = displayName;
   Wrapper.propTypes = {
@@ -250,11 +259,6 @@ function createSimpleWrapper(tag, suffix, displayName) {
     componentClass: tag,
     pullRight: false,
     pullLeft: false
-  };
-  Wrapper.contextTypes = {
-    $bs_navbar: _propTypes.default.shape({
-      bsClass: _propTypes.default.string
-    })
   };
   return Wrapper;
 }

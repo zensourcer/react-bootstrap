@@ -15,6 +15,8 @@ var _elementType = _interopRequireDefault(require("react-prop-types/lib/elementT
 
 var _bootstrapUtils = require("./utils/bootstrapUtils");
 
+var _bsContext = _interopRequireDefault(require("./utils/bsContext"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
@@ -24,12 +26,6 @@ const propTypes = {
 };
 const defaultProps = {
   componentClass: 'div'
-};
-const contextTypes = {
-  $bs_panel: _propTypes.default.shape({
-    headingId: _propTypes.default.string,
-    bsClass: _propTypes.default.string
-  })
 };
 
 class PanelHeading extends _react.default.Component {
@@ -61,7 +57,7 @@ class PanelHeading extends _react.default.Component {
 
 PanelHeading.propTypes = propTypes;
 PanelHeading.defaultProps = defaultProps;
-PanelHeading.contextTypes = contextTypes;
+PanelHeading.contextType = _bsContext.default;
 
 var _default = (0, _bootstrapUtils.bsClass)('panel', PanelHeading);
 

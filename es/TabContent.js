@@ -13,6 +13,8 @@ var _propTypes = _interopRequireDefault(require("prop-types"));
 
 var _elementType = _interopRequireDefault(require("prop-types-extra/lib/elementType"));
 
+var _bsContext = _interopRequireDefault(require("./utils/bsContext"));
+
 var _bootstrapUtils = require("./utils/bootstrapUtils");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -45,23 +47,6 @@ const defaultProps = {
   mountOnEnter: false,
   unmountOnExit: false
 };
-const contextTypes = {
-  $bs_tabContainer: _propTypes.default.shape({
-    activeKey: _propTypes.default.any
-  })
-};
-const childContextTypes = {
-  $bs_tabContent: _propTypes.default.shape({
-    bsClass: _propTypes.default.string,
-    animation: _propTypes.default.oneOfType([_propTypes.default.bool, _elementType.default]),
-    activeKey: _propTypes.default.any,
-    mountOnEnter: _propTypes.default.bool,
-    unmountOnExit: _propTypes.default.bool,
-    onPaneEnter: _propTypes.default.func.isRequired,
-    onPaneExited: _propTypes.default.func.isRequired,
-    exiting: _propTypes.default.bool.isRequired
-  })
-};
 
 class TabContent extends _react.default.Component {
   constructor(props, context) {
@@ -77,7 +62,7 @@ class TabContent extends _react.default.Component {
     };
   }
 
-  getChildContext() {
+  getBsChildContext() {
     const {
       bsClass,
       animation,
@@ -157,7 +142,7 @@ class TabContent extends _react.default.Component {
     });
   }
 
-  render() {
+  renderBsChildren() {
     const {
       componentClass: Component,
       className,
@@ -169,12 +154,19 @@ class TabContent extends _react.default.Component {
     }));
   }
 
+  render() {
+    return _react.default.createElement(_bsContext.default.Provider, {
+      value: { ...this.context,
+        ...this.getBsChildContext()
+      }
+    }, this.renderBsChildren());
+  }
+
 }
 
 TabContent.propTypes = propTypes;
 TabContent.defaultProps = defaultProps;
-TabContent.contextTypes = contextTypes;
-TabContent.childContextTypes = childContextTypes;
+TabContent.contextType = _bsContext.default;
 
 var _default = (0, _bootstrapUtils.bsClass)('tab', TabContent);
 

@@ -23,6 +23,8 @@ var _bootstrapUtils = require("./utils/bootstrapUtils");
 
 var _StyleConfig = require("./utils/StyleConfig");
 
+var _bsContext = _interopRequireDefault(require("./utils/bsContext"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
@@ -51,9 +53,6 @@ const propTypes = {
 };
 const defaultProps = {
   componentClass: 'input'
-};
-const contextTypes = {
-  $bs_formGroup: _propTypes.default.object
 };
 
 class FormControl extends _react.default.Component {
@@ -99,7 +98,7 @@ class FormControl extends _react.default.Component {
 
 FormControl.propTypes = propTypes;
 FormControl.defaultProps = defaultProps;
-FormControl.contextTypes = contextTypes;
+FormControl.contextType = _bsContext.default;
 FormControl.Feedback = _FormControlFeedback.default;
 FormControl.Static = _FormControlStatic.default;
 

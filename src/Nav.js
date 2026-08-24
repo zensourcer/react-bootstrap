@@ -15,6 +15,7 @@ import {
 } from './utils/bootstrapUtils';
 import createChainedFunction from './utils/createChainedFunction';
 import ValidComponentChildren from './utils/ValidComponentChildren';
+import bsContext from './utils/bsContext';
 
 // TODO: Should we expose `<NavItem>` as `<Nav.Item>`?
 
@@ -94,20 +95,6 @@ const defaultProps = {
   pullRight: false,
   pullLeft: false,
   stacked: false
-};
-
-const contextTypes = {
-  $bs_navbar: PropTypes.shape({
-    bsClass: PropTypes.string,
-    onSelect: PropTypes.func
-  }),
-
-  $bs_tabContainer: PropTypes.shape({
-    activeKey: PropTypes.any,
-    onSelect: PropTypes.func.isRequired,
-    getTabId: PropTypes.func.isRequired,
-    getPaneId: PropTypes.func.isRequired
-  })
 };
 
 class Nav extends React.Component {
@@ -354,6 +341,6 @@ class Nav extends React.Component {
 
 Nav.propTypes = propTypes;
 Nav.defaultProps = defaultProps;
-Nav.contextTypes = contextTypes;
+Nav.contextType = bsContext;
 
 export default bsClass('nav', bsStyles(['tabs', 'pills'], Nav));

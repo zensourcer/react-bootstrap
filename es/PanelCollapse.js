@@ -11,6 +11,8 @@ var _react = _interopRequireDefault(require("react"));
 
 var _bootstrapUtils = require("./utils/bootstrapUtils");
 
+var _bsContext = _interopRequireDefault(require("./utils/bsContext"));
+
 var _Collapse = _interopRequireDefault(require("./Collapse"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -48,14 +50,6 @@ const propTypes = {
    */
   onExited: _propTypes.default.func
 };
-const contextTypes = {
-  $bs_panel: _propTypes.default.shape({
-    headingId: _propTypes.default.string,
-    bodyId: _propTypes.default.string,
-    bsClass: _propTypes.default.string,
-    expanded: _propTypes.default.bool
-  })
-};
 
 class PanelCollapse extends _react.default.Component {
   render() {
@@ -87,7 +81,7 @@ class PanelCollapse extends _react.default.Component {
 }
 
 PanelCollapse.propTypes = propTypes;
-PanelCollapse.contextTypes = contextTypes;
+PanelCollapse.contextType = _bsContext.default;
 
 var _default = (0, _bootstrapUtils.bsClass)('panel', PanelCollapse);
 

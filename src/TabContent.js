@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
 import elementType from 'prop-types-extra/lib/elementType';
+import bsContext from './utils/bsContext';
 
 import {
   bsClass as setBsClass,
@@ -37,25 +38,6 @@ const defaultProps = {
   unmountOnExit: false
 };
 
-const contextTypes = {
-  $bs_tabContainer: PropTypes.shape({
-    activeKey: PropTypes.any
-  })
-};
-
-const childContextTypes = {
-  $bs_tabContent: PropTypes.shape({
-    bsClass: PropTypes.string,
-    animation: PropTypes.oneOfType([PropTypes.bool, elementType]),
-    activeKey: PropTypes.any,
-    mountOnEnter: PropTypes.bool,
-    unmountOnExit: PropTypes.bool,
-    onPaneEnter: PropTypes.func.isRequired,
-    onPaneExited: PropTypes.func.isRequired,
-    exiting: PropTypes.bool.isRequired
-  })
-};
-
 class TabContent extends React.Component {
   constructor(props, context) {
     super(props, context);
@@ -72,7 +54,7 @@ class TabContent extends React.Component {
     };
   }
 
-  getChildContext() {
+  getBsChildContext() {
     const { bsClass, animation, mountOnEnter, unmountOnExit } = this.props;
 
     const stateActiveKey = this.state.activeKey;
@@ -148,7 +130,7 @@ class TabContent extends React.Component {
     });
   }
 
-  render() {
+  renderBsChildren() {
     const { componentClass: Component, className, ...props } = this.props;
     const [bsProps, elementProps] = splitBsPropsAndOmit(props, [
       'animation',
@@ -163,11 +145,20 @@ class TabContent extends React.Component {
       />
     );
   }
+
+  render() {
+    return (
+      <bsContext.Provider
+        value={{ ...this.context, ...this.getBsChildContext() }}
+      >
+        {this.renderBsChildren()}
+      </bsContext.Provider>
+    );
+  }
 }
 
 TabContent.propTypes = propTypes;
 TabContent.defaultProps = defaultProps;
-TabContent.contextTypes = contextTypes;
-TabContent.childContextTypes = childContextTypes;
+TabContent.contextType = bsContext;
 
 export default setBsClass('tab', TabContent);
