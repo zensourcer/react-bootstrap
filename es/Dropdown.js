@@ -154,7 +154,9 @@ class Dropdown extends _react.default.Component {
 
   UNSAFE_componentWillUpdate(nextProps) {
     if (!nextProps.open && this.props.open) {
-      this._focusInDropdown = (0, _contains.default)(_reactDom.default.findDOMNode(this.menu), (0, _activeElement.default)(document));
+      const menu = _reactDom.default.findDOMNode(this.menu);
+
+      this._focusInDropdown = !!menu && (0, _contains.default)(menu, (0, _activeElement.default)(document));
     }
   }
 
