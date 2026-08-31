@@ -14,7 +14,11 @@ import warning from 'warning';
 import ButtonGroup from './ButtonGroup';
 import DropdownMenu from './DropdownMenu';
 import DropdownToggle from './DropdownToggle';
-import { bsClass as setBsClass, prefix } from './utils/bootstrapUtils';
+import {
+  bsClass as setBsClass,
+  getBsRole,
+  prefix
+} from './utils/bootstrapUtils';
 import createChainedFunction from './utils/createChainedFunction';
 import { exclusiveRoles, requiredRoles } from './utils/PropTypes';
 import ValidComponentChildren from './utils/ValidComponentChildren';
@@ -325,7 +329,7 @@ class Dropdown extends React.Component {
     return (
       <Component {...props} className={classNames(className, classes)}>
         {ValidComponentChildren.map(children, child => {
-          switch (child.props.bsRole) {
+          switch (getBsRole(child)) {
             case TOGGLE_ROLE:
               return this.renderToggle(child, {
                 id,

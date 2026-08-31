@@ -137,6 +137,20 @@ function getBsProps(props) {
   };
 }
 
+// Reads a child element's bsRole. React 19's automatic JSX runtime no longer
+// resolves defaultProps onto the element, so components that supply bsRole via
+// defaultProps (DropdownToggle, DropdownMenu, FormControl.Feedback) expose it
+// only on the component itself. Fall back to that so parents can still
+// dispatch on role. See https://github.com/facebook/react/pull/28733.
+export function getBsRole(child) {
+  if (child.props.bsRole !== undefined) {
+    return child.props.bsRole;
+  }
+  return child.type && child.type.defaultProps
+    ? child.type.defaultProps.bsRole
+    : undefined;
+}
+
 function isBsProp(propName) {
   return (
     propName === 'bsClass' ||
