@@ -5,7 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.prefix = prefix;
 exports.getClassSet = getClassSet;
-exports.getBsRole = getBsRole;
+exports.getChildProp = getChildProp;
 exports.splitBsProps = splitBsProps;
 exports.splitBsPropsAndOmit = splitBsPropsAndOmit;
 exports.addStyle = addStyle;
@@ -146,19 +146,27 @@ function getBsProps(props) {
     bsStyle: props.bsStyle,
     bsRole: props.bsRole
   };
-} // Reads a child element's bsRole. React 19's automatic JSX runtime no longer
-// resolves defaultProps onto the element, so components that supply bsRole via
-// defaultProps (DropdownToggle, DropdownMenu, FormControl.Feedback) expose it
-// only on the component itself. Fall back to that so parents can still
-// dispatch on role. See https://github.com/facebook/react/pull/28733.
+} // Reads a prop off a child *element*, falling back to the component's own
+// defaultProps. React 19's automatic JSX runtime no longer resolves
+// defaultProps onto the element, so a parent inspecting child.props before
+// render sees undefined for anything the child only supplies by default.
+// See https://github.com/facebook/react/pull/28733.
+//
+// Note this takes an element, unlike the props-taking helpers in this module.
+// Does not resolve through memo/forwardRef wrappers, which carry no
+// defaultProps of their own.
 
 
-function getBsRole(child) {
-  if (child.props.bsRole !== undefined) {
-    return child.props.bsRole;
+function getChildProp(child, propName) {
+  if (!child || !child.props) {
+    return undefined;
   }
 
-  return child.type && child.type.defaultProps ? child.type.defaultProps.bsRole : undefined;
+  if (child.props[propName] !== undefined) {
+    return child.props[propName];
+  }
+
+  return child.type && child.type.defaultProps ? child.type.defaultProps[propName] : undefined;
 }
 
 function isBsProp(propName) {

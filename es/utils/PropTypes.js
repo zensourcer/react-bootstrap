@@ -13,6 +13,8 @@ var _createChainableTypeChecker = _interopRequireDefault(require("prop-types-ext
 
 var _ValidComponentChildren = _interopRequireDefault(require("./ValidComponentChildren"));
 
+var _bootstrapUtils = require("./bootstrapUtils");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 const idPropType = _propTypes.default.oneOfType([_propTypes.default.string, _propTypes.default.number]);
@@ -37,7 +39,7 @@ function requiredRoles(...roles) {
   return (0, _createChainableTypeChecker.default)((props, propName, component) => {
     let missing;
     roles.every(role => {
-      if (!_ValidComponentChildren.default.some(props.children, child => child.props.bsRole === role)) {
+      if (!_ValidComponentChildren.default.some(props.children, child => (0, _bootstrapUtils.getChildProp)(child, 'bsRole') === role)) {
         missing = role;
         return false;
       }
@@ -57,7 +59,7 @@ function exclusiveRoles(...roles) {
   return (0, _createChainableTypeChecker.default)((props, propName, component) => {
     let duplicate;
     roles.every(role => {
-      const childrenWithRole = _ValidComponentChildren.default.filter(props.children, child => child.props.bsRole === role);
+      const childrenWithRole = _ValidComponentChildren.default.filter(props.children, child => (0, _bootstrapUtils.getChildProp)(child, 'bsRole') === role);
 
       if (childrenWithRole.length > 1) {
         duplicate = role;

@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import createChainableTypeChecker from 'prop-types-extra/lib/utils/createChainableTypeChecker';
 
 import ValidComponentChildren from './ValidComponentChildren';
+import { getChildProp } from './bootstrapUtils';
 
 const idPropType = PropTypes.oneOfType([PropTypes.string, PropTypes.number]);
 
@@ -31,7 +32,7 @@ export function requiredRoles(...roles) {
       if (
         !ValidComponentChildren.some(
           props.children,
-          child => child.props.bsRole === role
+          child => getChildProp(child, 'bsRole') === role
         )
       ) {
         missing = role;
@@ -60,7 +61,7 @@ export function exclusiveRoles(...roles) {
     roles.every(role => {
       const childrenWithRole = ValidComponentChildren.filter(
         props.children,
-        child => child.props.bsRole === role
+        child => getChildProp(child, 'bsRole') === role
       );
 
       if (childrenWithRole.length > 1) {
