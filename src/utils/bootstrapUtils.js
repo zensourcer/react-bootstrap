@@ -137,6 +137,27 @@ function getBsProps(props) {
   };
 }
 
+// Reads a prop off a child *element*, falling back to the component's own
+// defaultProps. React 19's automatic JSX runtime no longer resolves
+// defaultProps onto the element, so a parent inspecting child.props before
+// render sees undefined for anything the child only supplies by default.
+// See https://github.com/facebook/react/pull/28733.
+//
+// Note this takes an element, unlike the props-taking helpers in this module.
+// Does not resolve through memo/forwardRef wrappers, which carry no
+// defaultProps of their own.
+export function getChildProp(child, propName) {
+  if (!child || !child.props) {
+    return undefined;
+  }
+  if (child.props[propName] !== undefined) {
+    return child.props[propName];
+  }
+  return child.type && child.type.defaultProps
+    ? child.type.defaultProps[propName]
+    : undefined;
+}
+
 function isBsProp(propName) {
   return (
     propName === 'bsClass' ||

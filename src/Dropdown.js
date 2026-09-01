@@ -9,12 +9,15 @@ import all from 'prop-types-extra/lib/all';
 import elementType from 'prop-types-extra/lib/elementType';
 import isRequiredForA11y from 'prop-types-extra/lib/isRequiredForA11y';
 import { uncontrollable } from 'uncontrollable';
-import warning from 'warning';
 
 import ButtonGroup from './ButtonGroup';
 import DropdownMenu from './DropdownMenu';
 import DropdownToggle from './DropdownToggle';
-import { bsClass as setBsClass, prefix } from './utils/bootstrapUtils';
+import {
+  bsClass as setBsClass,
+  getChildProp,
+  prefix
+} from './utils/bootstrapUtils';
 import createChainedFunction from './utils/createChainedFunction';
 import { exclusiveRoles, requiredRoles } from './utils/PropTypes';
 import ValidComponentChildren from './utils/ValidComponentChildren';
@@ -235,16 +238,7 @@ class Dropdown extends React.Component {
       this.menu = c;
     };
 
-    if (typeof child.ref === 'string') {
-      warning(
-        false,
-        'String refs are not supported on `<Dropdown.Menu>` components. ' +
-          'To apply a ref to the component use the callback signature:\n\n ' +
-          'https://facebook.github.io/react/docs/more-about-refs.html#the-ref-callback-attribute'
-      );
-    } else {
-      ref = createChainedFunction(child.ref, ref);
-    }
+    ref = createChainedFunction(child.props.ref, ref);
 
     return cloneElement(child, {
       ...props,
@@ -266,16 +260,7 @@ class Dropdown extends React.Component {
       this.toggle = c;
     };
 
-    if (typeof child.ref === 'string') {
-      warning(
-        false,
-        'String refs are not supported on `<Dropdown.Toggle>` components. ' +
-          'To apply a ref to the component use the callback signature:\n\n ' +
-          'https://facebook.github.io/react/docs/more-about-refs.html#the-ref-callback-attribute'
-      );
-    } else {
-      ref = createChainedFunction(child.ref, ref);
-    }
+    ref = createChainedFunction(child.props.ref, ref);
 
     return cloneElement(child, {
       ...props,
@@ -325,7 +310,7 @@ class Dropdown extends React.Component {
     return (
       <Component {...props} className={classNames(className, classes)}>
         {ValidComponentChildren.map(children, child => {
-          switch (child.props.bsRole) {
+          switch (getChildProp(child, 'bsRole')) {
             case TOGGLE_ROLE:
               return this.renderToggle(child, {
                 id,

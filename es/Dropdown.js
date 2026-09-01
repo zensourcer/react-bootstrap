@@ -27,8 +27,6 @@ var _isRequiredForA11y = _interopRequireDefault(require("prop-types-extra/lib/is
 
 var _uncontrollable = require("uncontrollable");
 
-var _warning = _interopRequireDefault(require("warning"));
-
 var _ButtonGroup = _interopRequireDefault(require("./ButtonGroup"));
 
 var _DropdownMenu = _interopRequireDefault(require("./DropdownMenu"));
@@ -269,12 +267,7 @@ class Dropdown extends _react.default.Component {
       this.menu = c;
     };
 
-    if (typeof child.ref === 'string') {
-      process.env.NODE_ENV !== "production" ? (0, _warning.default)(false, 'String refs are not supported on `<Dropdown.Menu>` components. ' + 'To apply a ref to the component use the callback signature:\n\n ' + 'https://facebook.github.io/react/docs/more-about-refs.html#the-ref-callback-attribute') : void 0;
-    } else {
-      ref = (0, _createChainedFunction.default)(child.ref, ref);
-    }
-
+    ref = (0, _createChainedFunction.default)(child.props.ref, ref);
     return (0, _react.cloneElement)(child, { ...props,
       ref,
       labelledBy: id,
@@ -292,12 +285,7 @@ class Dropdown extends _react.default.Component {
       this.toggle = c;
     };
 
-    if (typeof child.ref === 'string') {
-      process.env.NODE_ENV !== "production" ? (0, _warning.default)(false, 'String refs are not supported on `<Dropdown.Toggle>` components. ' + 'To apply a ref to the component use the callback signature:\n\n ' + 'https://facebook.github.io/react/docs/more-about-refs.html#the-ref-callback-attribute') : void 0;
-    } else {
-      ref = (0, _createChainedFunction.default)(child.ref, ref);
-    }
-
+    ref = (0, _createChainedFunction.default)(child.props.ref, ref);
     return (0, _react.cloneElement)(child, { ...props,
       ref,
       bsClass: (0, _bootstrapUtils.prefix)(props, 'toggle'),
@@ -339,7 +327,7 @@ class Dropdown extends _react.default.Component {
     return _react.default.createElement(Component, _extends({}, props, {
       className: (0, _classnames.default)(className, classes)
     }), _ValidComponentChildren.default.map(children, child => {
-      switch (child.props.bsRole) {
+      switch ((0, _bootstrapUtils.getChildProp)(child, 'bsRole')) {
         case TOGGLE_ROLE:
           return this.renderToggle(child, {
             id,

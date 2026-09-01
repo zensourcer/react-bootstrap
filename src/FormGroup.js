@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import {
   bsClass,
   bsSizes,
+  getChildProp,
   getClassSet,
   splitBsPropsAndOmit
 } from './utils/bootstrapUtils';
@@ -36,7 +37,7 @@ class FormGroup extends React.Component {
     return ValidComponentChildren.some(
       children,
       child =>
-        child.props.bsRole === 'feedback' ||
+        getChildProp(child, 'bsRole') === 'feedback' ||
         (child.props.children && this.hasFeedback(child.props.children))
     );
   }
